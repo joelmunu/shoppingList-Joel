@@ -12,33 +12,49 @@ const productType = [
 ]
 
 const ProductInput = ({ onProductAdd }) => {
-    const [productName, setProductName] = useState('');
 
-    const changeTextHandler = (value) => {
-        setProductName(value);
-    }
+    const defaultValues = {
+        productName: '',
+        quantity: '',
+        bought: false,
+        type: ''
+    };
+
+    const [product, setProduct] = useState(defaultValues);
+
+    const productNameHandler = (value) => {
+        setProduct({...product, productName: value})
+    };
+
+    const quantityHandler = (value) => {
+        setProduct({...product, quantity: value})
+    };
+
+    const typeHandler = (value) => {
+        setProduct({...product, type: value})
+    };
 
     const addProductHandler = () => {
-        const sanitizedName = productName.trim()
-        if (sanitizedName !== '') {
-            onProductAdd(sanitizedName);
-        }
-        setProductName('');
+        onProductAdd(product);
+        setProduct(defaultValues);
     }
 
     return (
         <View style={styles.productInput}>
             <View style={styles.View1}>
-                <TextInput style={styles.productName}
+                <TextInput
+                    style={styles.productName}
                     placeholder='Product name...'
                     keyboardType="default"
-                    onChangeText={changeTextHandler}
-                    value={productName} />
-
-                <TextInput style={styles.productQuantity}
+                    onChangeText={productNameHandler}
+                    value={product.productName}
+                />
+                <TextInput
+                    style={styles.productQuantity}
                     placeholder='Quantity...'
                     keyboardType='Numeric'
-
+                    onChangeText={quantityHandler}
+                    value={product.quantity}
                 />
             </View>
             <View style={styles.View2}>
@@ -47,7 +63,7 @@ const ProductInput = ({ onProductAdd }) => {
                     defaultButtonText={'Product type...'}
                     buttonStyle={styles.dropdownButton}
                     buttonTextStyle={styles.dropdownBtnText}
-                    rowTextStyle={styles.dropdown}
+                    onSelect={typeHandler}
                 />
                 <View style={styles.pressable}>
                     <Pressable
@@ -56,11 +72,10 @@ const ProductInput = ({ onProductAdd }) => {
                         <Text style={styles.btnText}>Add</Text>
                     </Pressable>
                 </View>
-
             </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     productInput: {
