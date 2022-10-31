@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ProductInput from './components/ProductInput';
 import ListItem from './components/ListItem';
+import uuid from 'uuid/package.json'
 
 export default function App() {
   const [ products, setProducts ] = useState([]);
 
-  const addProductHandler = (productName) => {
-    setProducts(() => [...products, productName]);
+  const addProductHandler = (product) => {
+    setProducts(() => [{id: uuid.v4(), ...product}, ...products]);
   }
 
   const removeProductHandler = (productName) => {
